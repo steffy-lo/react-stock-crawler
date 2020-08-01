@@ -1,26 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import Ticker from 'react-ticker';
+import { config } from './config';
 
-function App() {
+const App = (props) => {
+
+  const [stocks, setStocks] = useState([]);
+
+  useEffect(() => {
+    setStocks(['AAPL', 'GOOG'])
+  }, []);
+
+  const Stock = (props) => {
+    const [stock, setStock] = useState({
+      "c": 0,
+      "h": 0,
+      "l": 0,
+      "o": 0,
+      "pc": 0
+    });
+
+    useEffect(() => {
+      async function fetchData() {
+        const response = await fetch('https://finnhub.io/api/v1/quote?symbol=' + props.symbol + '&token=' + props.apiKey);
+        const stockData = await response.json();
+        console.log(stockData)
+        setStock(stockData);
+      }
+      fetchData();
+    }, []);
+
+    return(
+      <div>
+        Open: {stock.o} 
+        High: {stock.h} 
+        Low: {stock.l}
+        Current: {stock.c}
+        Previous Close: {stock.pc}
+      </div>
+    )
+
+  };
+
+  const GetStockData = (props) => {
+    const stockData = props.stocks.map(stock => <Stock symbol={stock} apiKey={config.apiKey}/>);
+    return(
+      stockData
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Ticker speed={10}>
+        {() => <GetStockData stocks={stocks}/>}
+      </Ticker>
     </div>
   );
-}
+};
 
 export default App;
