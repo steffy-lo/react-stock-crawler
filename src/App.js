@@ -7,20 +7,25 @@ const App = (props) => {
   const [stocks, setStocks] = useState([]);
 
   useEffect(() => {
-    setStocks([
-      "AAPL",
-      "GOOG",
-      "AMZN",
-      "FB",
-      "NFLX",
-      "MSFT",
-      "BTC-USD",
-      "AMD",
-      "INTC",
-      "TSLA",
-      "CIBC",
-      "ATVI",
-    ]);
+    if (Array.isArray(props.stocks)) {
+      setStocks(props.stocks);
+    } else {
+      //default
+      setStocks([
+        "AAPL",
+        "GOOG",
+        "AMZN",
+        "FB",
+        "NFLX",
+        "MSFT",
+        "BTC-USD",
+        "AMD",
+        "INTC",
+        "TSLA",
+        "CIBC",
+        "ATVI",
+      ]);
+    }
   }, []);
 
   const Stock = (props) => {
@@ -78,7 +83,7 @@ const App = (props) => {
   };
   const GetStockData = (props) => {
     const stockData = props.stocks.slice(0, 10).map((stock) => {
-      return <Stock symbol={stock} apiKey={config.apiKey} />;
+      return <Stock symbol={stock} apiKey={props.apiKey} />;
     });
     return stockData;
   };
@@ -86,7 +91,7 @@ const App = (props) => {
   return (
     <div style={{ backgroundColor: "black" }}>
       <Ticker mode={"smooth"} speed={5}>
-        {() => <GetStockData stocks={stocks} />}
+        {() => <GetStockData stocks={stocks} apiKey={props.apiKey} />}
       </Ticker>
     </div>
   );
