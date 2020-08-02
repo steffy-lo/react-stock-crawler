@@ -1,56 +1,92 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import Ticker from 'react-ticker';
-import { config } from './config';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import Ticker from "react-ticker";
+import { config } from "./config";
 
 const App = (props) => {
-
   const [stocks, setStocks] = useState([]);
 
   useEffect(() => {
-    setStocks(['AAPL', 'GOOG'])
+    setStocks([
+      "AAPL",
+      "GOOG",
+      "AMZN",
+      "FB",
+      "NFLX",
+      "MSFT",
+      "BTC-USD",
+      "AMD",
+      "INTC",
+      "TSLA",
+      "CIBC",
+      "ATVI",
+    ]);
   }, []);
 
   const Stock = (props) => {
     const [stock, setStock] = useState({
-      "c": 0,
-      "h": 0,
-      "l": 0,
-      "o": 0,
-      "pc": 0
+      c: 0, //close
+      h: 0, //high
+      l: 0, //low
+      o: 0, //open
+      pc: 0, //prev close
     });
 
-    const [color, setColor] = useState("")
+    const [color, setColor] = useState("white");
+    const [percent, setPercent] = useState(0);
 
     useEffect(() => {
       async function fetchData() {
-        const response = await fetch('https://finnhub.io/api/v1/quote?symbol=' + props.symbol + '&token=' + props.apiKey);
+        const response = await fetch(
+          "https://finnhub.io/api/v1/quote?symbol=" +
+            props.symbol +
+            "&token=" +
+            props.apiKey
+        );
         const stockData = await response.json();
-        console.log(stockData)
+        //console.log(stockData);
         setStock(stockData);
       }
       fetchData();
     }, []);
 
-    return(
-      <span style={{whiteSpace: "nowrap"}}>
-        {" " + props.symbol + " " + stock.c + " " + (((stock.pc-stock.o)/stock.o)*100).toFixed(1) + "% "}
-      </span>
-    )
+    useEffect(() => {
+      let percentDiff = (((stock.o - stock.pc) / stock.o) * 100).toFixed(1);
+      if (percentDiff > 0) {
+        setColor("#37C800"); //green
+        percentDiff += "% ⬆";
+      } else if (percentDiff == 0) {
+        setColor("white");
+      } else {
+        setColor("#FF2F2F"); //red
+        percentDiff += "% ⬇";
+      }
+      setPercent(percentDiff);
+    }, [stock]);
 
-  };
+    const styles = {
+      whiteSpace: "nowrap",
+      backgroundColor: "black",
+      padding: "10px",
+      color: color,
+      display: "inline-block",
+    };
 
-  const GetStockData = (props) => {
-    const stockData = props.stocks.map(stock => <Stock symbol={stock} apiKey={config.apiKey}/>);
-    return(
-      stockData
+    return (
+      <span style={styles}>{`${props.symbol} ${stock.c} ${percent}`}</span>
     );
+  };
+  const GetStockData = (props) => {
+    const stockData = props.stocks.slice(0, 10).map((stock) => {
+      return <Stock symbol={stock} apiKey={config.apiKey} />;
+    });
+    return stockData;
   };
 
   return (
-    <div>
-      <Ticker speed={10}>
-        {() => <GetStockData stocks={stocks}/>}
+    <div style={{ backgroundColor: "black" }}>
+      <Ticker mode={"smooth"} speed={5}>
+        {() => <GetStockData stocks={stocks} />}
       </Ticker>
     </div>
   );
