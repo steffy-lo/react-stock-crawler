@@ -20,6 +20,8 @@ const App = (props) => {
       "pc": 0
     });
 
+    const [color, setColor] = useState("")
+
     useEffect(() => {
       async function fetchData() {
         const response = await fetch('https://finnhub.io/api/v1/quote?symbol=' + props.symbol + '&token=' + props.apiKey);
@@ -31,13 +33,9 @@ const App = (props) => {
     }, []);
 
     return(
-      <div>
-        Open: {stock.o} 
-        High: {stock.h} 
-        Low: {stock.l}
-        Current: {stock.c}
-        Previous Close: {stock.pc}
-      </div>
+      <span style={{whiteSpace: "nowrap"}}>
+        {" " + props.symbol + " " + stock.c + " " + (((stock.pc-stock.o)/stock.o)*100).toFixed(1) + "% "}
+      </span>
     )
 
   };
