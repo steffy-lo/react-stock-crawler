@@ -19,7 +19,7 @@ import StockCrawler from 'react-stock-crawler/dist'
 
 function App() {
   return (
-    <StockCrawler stocks={['AAPL', 'MSFT']} apiKey={<insert your api key here>} />
+    <StockCrawler stocks={['AAPL', 'MSFT']} apiKey={"API_KEY"} />
   );
 }
 
