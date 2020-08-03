@@ -1,6 +1,8 @@
 A lightweight react component that gets stock data periodically and displays a list of stocks that crawls from right to left.
 It uses the Finnhub API (https://finnhub.io/docs/api) to fetch the stock data, hence, an api key is needed to use this component which will be passed in through props.
 
+<img src = "https://github.com/steffy-lo/react-stock-crawler/blob/master/stock.gif?raw=true" alt="Gif not loading"/>
+
 ## Getting Started
 
 1. Install the package
