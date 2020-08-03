@@ -48,9 +48,16 @@ const App = (props) => {
             "&token=" +
             props.apiKey
         );
-        const stockData = await response.json();
-        //console.log(stockData);
-        setStock(stockData);
+        if (response.status === 200) {
+          const stockData = await response.json();
+          localStorage.setItem('stock', JSON.stringify(stockData))
+          setStock(stockData);
+        } else {
+          const stockData = JSON.parse(localStorage.getItem('stock'))
+          if (stockData) {
+            setStock(stockData)
+          }
+        };
       }
       fetchData();
     }, []);
@@ -60,7 +67,7 @@ const App = (props) => {
       if (percentDiff > 0) {
         setColor("#37C800"); //green
         percentDiff += "% ⬆";
-      } else if (percentDiff == 0) {
+      } else if (percentDiff === 0) {
         setColor("white");
       } else {
         setColor("#FF2F2F"); //red
