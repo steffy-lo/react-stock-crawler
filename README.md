@@ -10,7 +10,7 @@ It uses the Finnhub API (https://finnhub.io/docs/api) to fetch the stock data, h
 `npm install react-ticker`
 
 # Props
-- `stocks` A list of stocks represented by their ticker symbol
+- `stocks` A list of stocks represented by their ticker symbol (Maximum Length = 7)
 - `apiKey` Your api key to use the [Finnhub API](https://finnhub.io/docs/api)
 
 ## Example Usage
