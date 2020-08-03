@@ -1,7 +1,7 @@
 A lightweight react component that gets stock data periodically and displays a list of stocks that crawls from right to left.
 It uses the Finnhub API (https://finnhub.io/docs/api) to fetch the stock data, hence, an api key is needed to use this component which will be passed in through props.
 
-<video autoplay muted loop src='stock-crawler.mp4' type='video/mp4'>Your browser doesn't support the video tag</video>
+<video autoplay muted loop src='https://github.com/steffy-lo/react-stock-crawler/blob/master/stock-crawler.mp4' type='video/mp4'>Your browser doesn't support the video tag</video>
 
 ## Getting Started
 
